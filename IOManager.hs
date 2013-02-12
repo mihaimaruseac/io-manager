@@ -14,10 +14,17 @@ module IOManager
   , writeOutput
   ) where
 
+import Debug.Trace (trace)
+import qualified Data.Map as Map
+import System.Environment (getArgs)
+
 type Filename = String
 
--- | TODO
-data Input
+-- | Type of values holding inputs to the program, grouped by input source.
+data Input = Input
+  { stdin :: String
+  , file :: Map.Map Filename String
+  } deriving (Show)
 
 -- | TODO
 data Output
@@ -25,12 +32,12 @@ data Output
 -- | Obtains the contents of the standard input as given to the program.
 -- Returns a String containing the input without any modification.
 getStdIn :: Input -> String
-getStdIn = undefined
+getStdIn = stdin
 
 -- | Obtains the contents of an input file. Returns a String containing the
 -- input without any modification.
 getInputFile :: Input -> Filename -> String
-getInputFile = undefined
+getInputFile i f = file i Map.! f
 
 -- | Appends text to the standard output. No newline is printed at the end,
 -- the caller must handle it. Returns a new @Output@ value, containing the
@@ -56,8 +63,23 @@ writeOutputFile = undefined
 -- | Reads the input from all the files given as command line arguments and
 -- constructs an @Input@ value.
 readInput :: IO Input
-readInput = undefined
+readInput = do
+  args <- getArgs
+  print args
+  map <- readInputFiles args Map.empty
+  input <- getContents
+  print $ Input input map
+  return $ Input input map
 
 -- | Writes the contents of an @Output@ value to the needed files.
 writeOutput :: Output -> IO ()
 writeOutput = undefined
+
+-- Reads all of the input files into the map of the Input value.
+readInputFiles :: [Filename]
+               -> Map.Map Filename String
+               -> IO (Map.Map Filename String)
+readInputFiles [] m = return m
+readInputFiles (f:fs) m = do
+  content <- readFile f
+  readInputFiles fs $ Map.insert f content m
