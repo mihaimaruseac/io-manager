@@ -10,7 +10,7 @@ you can see, only three lines are to be copied by the student:
 
 * the `module Main` one
 * the `import IOManager` one
-* the `main = ..` one
+* the `main = wrapIO ..` one
 
 Everything else is free of advanced concepts like monads, mutability,
 strictness, etc.
