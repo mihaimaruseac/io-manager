@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module IOManager
   (
     -- * The @Filename@ type
@@ -12,22 +13,33 @@ module IOManager
     -- * Exported for use in main pipeline
   , readInput
   , writeOutput
+
+    -- * Exported to be usable by students
+  , getStdIn
+  , getInputFile
+  , writeStdOut
+  , writeStdErr
+  , writeOutputFile
   ) where
 
-import Debug.Trace (trace)
 import qualified Data.Map as Map
 import System.Environment (getArgs)
+import qualified System.IO as System
 
 type Filename = String
 
 -- | Type of values holding inputs to the program, grouped by input source.
 data Input = Input
   { stdin :: String
-  , file :: Map.Map Filename String
-  } deriving (Show)
+  , fileInput :: Map.Map Filename String
+  }
 
--- | TODO
-data Output
+-- | Type of values holding outputs of the program, grouped by output source.
+data Output = Output
+  { stdout :: String
+  , stderr :: String
+  , fileOutput :: Map.Map Filename String
+  }
 
 -- | Obtains the contents of the standard input as given to the program.
 -- Returns a String containing the input without any modification.
@@ -37,13 +49,13 @@ getStdIn = stdin
 -- | Obtains the contents of an input file. Returns a String containing the
 -- input without any modification.
 getInputFile :: Input -> Filename -> String
-getInputFile i f = file i Map.! f
+getInputFile i f = fileInput i Map.! f
 
 -- | Appends text to the standard output. No newline is printed at the end,
 -- the caller must handle it. Returns a new @Output@ value, containing the
 -- appended text.
 writeStdOut :: Output -> String -> Output
-writeStdOut = undefined
+writeStdOut o@Output{..} s = o { stdout = stdout ++ s }
 
 -- | Appends text to the standard error. No newline is printed at the end, the
 -- caller must handle it. Returns a new @Output@ value, containing the
@@ -52,28 +64,30 @@ writeStdOut = undefined
 -- **Note**: When running the program, the standard error text is displayed
 -- after the entire text from the standard input is displayed.
 writeStdErr :: Output -> String -> Output
-writeStdErr = undefined
+writeStdErr o@Output{..} s = o { stderr = stderr ++ s }
 
 -- | Appends to an output file. If the file does not exist in the @Output@
 -- value (this program didn't yet write in it), it is created as a new one.
 -- Returns a new @Output@ value, containing the appended text.
 writeOutputFile :: Output -> Filename -> String -> Output
-writeOutputFile = undefined
+writeOutputFile o@Output{..} f s
+  = o { fileOutput = Map.insertWith (++) f s fileOutput }
 
 -- | Reads the input from all the files given as command line arguments and
 -- constructs an @Input@ value.
-readInput :: IO Input
+readInput :: IO (Input, Output)
 readInput = do
   args <- getArgs
-  print args
-  map <- readInputFiles args Map.empty
+  imap <- readInputFiles args Map.empty
   input <- getContents
-  print $ Input input map
-  return $ Input input map
+  return $ (Input input imap, Output "" "" Map.empty)
 
 -- | Writes the contents of an @Output@ value to the needed files.
 writeOutput :: Output -> IO ()
-writeOutput = undefined
+writeOutput o = do
+  putStrLn $ stdout o
+  System.hPutStrLn System.stderr $ stderr o
+  writeOutputFiles $ Map.toList $ fileOutput o
 
 -- Reads all of the input files into the map of the Input value.
 readInputFiles :: [Filename]
@@ -83,3 +97,8 @@ readInputFiles [] m = return m
 readInputFiles (f:fs) m = do
   content <- readFile f
   readInputFiles fs $ Map.insert f content m
+
+-- Writes the content of all the output files.
+writeOutputFiles :: [(Filename, String)] -> IO ()
+writeOutputFiles [] = return ()
+writeOutputFiles ((f,s):fs) = writeFile f s >> writeOutputFiles fs
