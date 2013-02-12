@@ -11,8 +11,7 @@ module IOManager
   , Output
 
     -- * Exported for use in main pipeline
-  , readInput
-  , writeOutput
+  , wrapIO
 
     -- * Exported to be usable by students
   , getStdIn
@@ -88,6 +87,11 @@ writeOutput o = do
   putStrLn $ stdout o
   System.hPutStrLn System.stderr $ stderr o
   writeOutputFiles $ Map.toList $ fileOutput o
+
+-- | Wraps a simple function @Input@ -> @Output@ -> @Output@ in
+-- order to simplify student's usage.
+wrapIO :: (Input -> Output -> Output) -> IO ()
+wrapIO f = readInput >>= return . uncurry f >>= writeOutput
 
 -- Reads all of the input files into the map of the Input value.
 readInputFiles :: [Filename]

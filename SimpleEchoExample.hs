@@ -15,9 +15,10 @@ module Main where
 -- Import IO code from IOManager.
 import IOManager
 
--- The main function as a pipeline.
+-- The main function simply tells which is the function implemented by the
+-- student.
 main :: IO ()
-main = readInput >>= return . uncurry solve >>= writeOutput
+main = wrapIO solve
 
 -- Solution of the problem. Add here your implementation.
 solve :: Input -> Output -> Output
