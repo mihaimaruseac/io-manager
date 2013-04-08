@@ -22,6 +22,7 @@ module IOManager
   ) where
 
 import qualified Data.Map as Map
+import Control.Monad (liftM)
 import System.Environment (getArgs)
 import qualified System.IO as System
 
@@ -79,7 +80,7 @@ readInput = do
   args <- getArgs
   imap <- readInputFiles args Map.empty
   input <- getContents
-  return $ (Input input imap, Output "" "" Map.empty)
+  return (Input input imap, Output "" "" Map.empty)
 
 -- | Writes the contents of an @Output@ value to the needed files.
 writeOutput :: Output -> IO ()
@@ -91,7 +92,7 @@ writeOutput o = do
 -- | Wraps a simple function @Input@ -> @Output@ -> @Output@ in
 -- order to simplify student's usage.
 wrapIO :: (Input -> Output -> Output) -> IO ()
-wrapIO f = readInput >>= return . uncurry f >>= writeOutput
+wrapIO f = liftM (uncurry f) readInput >>= writeOutput
 
 -- Reads all of the input files into the map of the Input value.
 readInputFiles :: [Filename]
