@@ -9,7 +9,7 @@ This skeleton comes with a simple example showing the usage of this system. As
 you can see, only three lines are to be copied by the student:
 
 * the `module Main` one
-* the `import IOManager` one
+* the `import Training.MM.IOManager` one
 * the `main = wrapIO ..` one
 
 Everything else is free of advanced concepts like monads, mutability,
