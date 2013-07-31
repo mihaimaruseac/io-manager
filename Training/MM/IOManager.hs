@@ -1,5 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
-module IOManager
+module Training.MM.IOManager
   (
     -- * The @Filename@ type
     Filename

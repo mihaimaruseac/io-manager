@@ -13,7 +13,7 @@ module Main where
 -- in the input and output part.
 
 -- Import IO code from IOManager.
-import IOManager
+import Training.MM.IOManager
 
 -- The main function simply tells which is the function implemented by the
 -- student.

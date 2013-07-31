@@ -5,7 +5,10 @@ OBJECTS = SimpleEchoExample
 all: $(OBJECTS)
 
 SimpleEchoExample:
-	ghc --make -Wall -Werror $@
+	@type cabal-dev &> /dev/null || (echo "cabal-dev not found. Install Haskell Plaftorm and cabal-dev"; false)
+	@cabal-dev configure
+	@cabal-dev build
+	@cp dist/build/SimpleEchoExample/SimpleEchoExample .
 
 clean:
-	$(RM) *.o *.hi $(OBJECTS)
+	$(RM) -r *.o *.hi $(OBJECTS) dist
