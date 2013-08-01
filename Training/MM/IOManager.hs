@@ -1,4 +1,18 @@
 {-# LANGUAGE RecordWildCards #-}
+
+{- |
+Module      :  $Header$
+Description :  Main module of io-manager library
+Copyright   :  (c) Mihai Maruseac
+License     :  BSD3
+
+Maintainer  :  mihai.maruseac@gmail.com
+Stability   :  stable
+Portability :  portable
+
+A skeleton library to help learners of Haskell concentrate on the
+pure-functional aspect and let the IO be handled by the library.
+-}
 module Training.MM.IOManager
   (
     -- * The @Filename@ type
@@ -26,6 +40,7 @@ import Control.Monad (liftM)
 import System.Environment (getArgs)
 import qualified System.IO as System
 
+-- | Type of filenames.
 type Filename = String
 
 -- | Type of values holding inputs to the program, grouped by input source.
@@ -94,7 +109,7 @@ writeOutput o = do
 wrapIO :: (Input -> Output -> Output) -> IO ()
 wrapIO f = liftM (uncurry f) readInput >>= writeOutput
 
--- Reads all of the input files into the map of the Input value.
+-- | Reads all of the input files into the map of the Input value.
 readInputFiles :: [Filename]
                -> Map.Map Filename String
                -> IO (Map.Map Filename String)
@@ -103,7 +118,7 @@ readInputFiles (f:fs) m = do
   content <- readFile f
   readInputFiles fs $ Map.insert f content m
 
--- Writes the content of all the output files.
+-- | Writes the content of all the output files.
 writeOutputFiles :: [(Filename, String)] -> IO ()
 writeOutputFiles [] = return ()
 writeOutputFiles ((f,s):fs) = writeFile f s >> writeOutputFiles fs
