@@ -25,9 +25,9 @@ The repository contains an example code in `SimpleEchoExample.hs`: a
 demonstrative program which copies content from files (or `stdin`) to files
 (or `stdout`) depending on a description written at `stdin`.
 
-Run `make` to build it and then give as arguments the name of the files from
-which you want to read. Finish `stdin` with `EOF` (`^D` on Linux, `^Z` on
-Windows).
+Run `make` (or the usual `cabal` setup) to build it and then give as arguments
+the name of the files from which you want to read. Finish `stdin` with `EOF`
+(`^D` on Linux, `^Z` on Windows).
 
 Example:
 
