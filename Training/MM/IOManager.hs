@@ -76,7 +76,7 @@ writeStdOut o@Output{..} s = o { stdout = stdout ++ s }
 -- caller must handle it. Returns a new @Output@ value, containing the
 -- appended text.
 --
--- **Note**: When running the program, the standard error text is displayed
+-- Note: When running the program, the standard error text is displayed
 -- after the entire text from the standard input is displayed.
 writeStdErr :: Output -> String -> Output
 writeStdErr o@Output{..} s = o { stderr = stderr ++ s }
