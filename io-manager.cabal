@@ -24,12 +24,12 @@ source-repository head
 
 library
   exposed-modules:   Training.MM.IOManager
-  build-depends:     base ==4.5.*,
-                     containers ==0.4.*
+  build-depends:     base,
+                     containers
 
 executable SimpleEchoExample
-  build-depends:     base ==4.5.*,
-                     containers ==0.4.*,
+  build-depends:     base,
+                     containers,
                      io-manager
   Main-Is:           SimpleEchoExample.hs
   Hs-Source-Dirs:    simple-echo-example
