@@ -28,7 +28,7 @@ library
                      containers
 
 executable SimpleEchoExample
-  build-depends:     base,
+  build-depends:     base < 5,
                      containers,
                      io-manager
   Main-Is:           SimpleEchoExample.hs
