@@ -2,8 +2,8 @@ io-manager
 ==========
 
 This is a simple framework which hides away the IO monad and allows beginner
-students to write simple applications in Haskell, no matter how many files are
-needed for input and output.
+students to write simple applications in Haskell without having to touch the
+`IO` monad for reading or writing to standard file descriptors or other files.
 
 This skeleton comes with a simple example showing the usage of this system. As
 you can see, only three lines are to be copied by the student:
