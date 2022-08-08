@@ -1,0 +1,21 @@
+name: Haskell CI with Cabal
+
+on:
+  push:
+    braches: [master]
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize, reopened]
+  pull_request_review:
+    branches: [master]
+    types: [submitted]
+
+permissions: {}
+
+jobs:
+  test:
+    name: Test job
+    runs-on: ubuntu-latest
+    steps:
+      - name: List everything
+        run: tree -alps .
