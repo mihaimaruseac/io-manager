@@ -19,3 +19,7 @@ jobs:
     steps:
       - name: List everything
         run: tree -alps .
+      - name: PR merged event
+        run: echo "${{ github.event.pull_request.merged }}"
+      - name: PR review event
+        run: echo "${{ github.event.review.state }}"
