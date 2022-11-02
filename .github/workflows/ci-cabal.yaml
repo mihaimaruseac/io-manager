@@ -23,5 +23,7 @@ jobs:
         run: echo "${{ github.event.pull_request.merged }}"
       - name: PR review event
         run: echo "${{ github.event.review.state }}"
-      - name: PR push event
+      - name: PR push event (.ref)
         run: echo "${{ github.event.push.ref }}"
+      - name: PR push event
+        run: echo "${{ github.event.push }}"
