@@ -27,3 +27,5 @@ jobs:
         run: echo "${{ github.event.push.ref }}"
       - name: PR push event
         run: echo "${{ github.event.push }}"
+      - name: PR full event
+        run: echo "${{ github.event }}"
