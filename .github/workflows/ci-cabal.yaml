@@ -28,4 +28,4 @@ jobs:
       - name: PR push event
         run: echo "${{ github.event.push }}"
       - name: PR full event
-        run: echo "${{ github.event }}"
+        run: echo "${{ toJson(github.event) }}"
