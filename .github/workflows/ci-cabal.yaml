@@ -1,8 +1,8 @@
 name: Haskell CI with Cabal
 
 on:
-  #push:
-  #  braches: [master]
+  push:
+    braches: [master]
   pull_request:
     branches: [master]
     types: [opened, synchronize, reopened, closed]
