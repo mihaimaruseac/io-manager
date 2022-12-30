@@ -14,10 +14,13 @@ jobs:
     name: Test job
     runs-on: ubuntu-latest
     steps:
-      - name: List everything
+      - name: List everything (pre)
         run: tree -alps .
 
       - name: "Checkout code"
         uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
           persist-credentials: false
+
+      - name: List everything (post)
+        run: tree -alps .
