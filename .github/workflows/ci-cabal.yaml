@@ -2,7 +2,7 @@ name: Haskell CI with Cabal
 
 on:
   push:
-    braches: [master]
+    branches: [master]
   pull_request:
     branches: [master]
     types: [opened, synchronize, reopened, closed]
