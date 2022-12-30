@@ -27,3 +27,6 @@ jobs:
 
       - name: List everything (post)
         run: tree -alps .
+
+      - name: Just testing
+        run: cat some_file
