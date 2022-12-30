@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: [Postsubmit]
     types: [completed]
-  workflow_dispatch
+  workflow_dispatch:
 
 permissions: {}
 
