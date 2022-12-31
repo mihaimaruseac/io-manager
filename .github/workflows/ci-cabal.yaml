@@ -44,7 +44,7 @@ jobs:
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
 
-      - name: List everything (post)
+      - name: List everything (post toolchain)
         run: tree -alps .
 
       - name: List Haskell binaries (post)
@@ -66,8 +66,17 @@ jobs:
       - name: Build code
         run: cabal build
 
+      - name: List everything (post build)
+        run: tree -alps .
+
       - name: Test code
         run: cabal test
 
+      - name: List everything (post test)
+        run: tree -alps .
+
       - name: Benchmark code
         run: cabal bench || true
+
+      - name: List everything (post bench)
+        run: tree -alps .
