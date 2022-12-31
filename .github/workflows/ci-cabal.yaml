@@ -26,7 +26,20 @@ jobs:
         run: tree -alps .
 
       - name: List Haskell binaries (pre)
-        run: which cabal stack ghc ghci || true
+        run: |
+          echo 'Cabal: '
+          which cabal || true
+          cabal --version || true
+          echo 'GHC{,i}: '
+          which ghc ghci || true
+          ghc --version || true
+          ghci --version || true
+          echo 'GHCup: '
+          which ghcup || true
+          ghcup --version || true
+          echo 'Stack: '
+          which stack || true
+          stack --version || true
 
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
@@ -35,4 +48,17 @@ jobs:
         run: tree -alps .
 
       - name: List Haskell binaries (post)
-        run: which cabal stack ghc ghci || true
+        run: |
+          echo 'Cabal: '
+          which cabal || true
+          cabal --version || true
+          echo 'GHC{,i}: '
+          which ghc ghci || true
+          ghc --version || true
+          ghci --version || true
+          echo 'GHCup: '
+          which ghcup || true
+          ghcup --version || true
+          echo 'Stack: '
+          which stack || true
+          stack --version || true
