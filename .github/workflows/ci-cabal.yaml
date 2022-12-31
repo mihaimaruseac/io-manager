@@ -65,10 +65,4 @@ jobs:
 
       - name: Help cabal
         run: |
-          cabal --help || true
-          echo "==="
-          cabal update    --help || true
-          echo "==="
-          cabal v1-update --help || true
-          echo "==="
-          cabal v2-update --help || true
+          diff -u <(cabal update    --help) <(cabal v2-update --help) || true
