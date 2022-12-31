@@ -51,6 +51,7 @@ jobs:
           #tree -alps .
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_toolchain
+          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_toolchain_cabal
 
       - name: List Haskell binaries (post)
         run: |
@@ -77,9 +78,11 @@ jobs:
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_build
           diff -u post_toolchain post_build || true
+          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_build_cabal
+          diff -u post_toolchain_cabal post_build_cabal || true
 
       - name: Test code
-        run: cabal test
+        run: cabal test || true
 
       - name: List everything (post test)
         run: |
@@ -87,6 +90,8 @@ jobs:
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_test
           diff -u post_build post_test || true
+          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_test_cabal
+          diff -u post_build_cabal post_test_cabal || true
 
       - name: Benchmark code
         run: cabal bench || true
@@ -97,3 +102,5 @@ jobs:
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_bench
           diff -u post_test post_bench || true
+          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_bench_cabal
+          diff -u post_test_cabal post_bench_cabal || true
