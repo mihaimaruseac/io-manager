@@ -48,7 +48,7 @@ jobs:
       - name: Cache
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
-          path: /usr/local/.ghcup
+          path: /usr/local/.ghcup # This is a 630MB cache, adding 2 more mins to create!!
           key: toolchain-v0
 
       - name: Setup Haskell Compiler (cabal)
