@@ -48,8 +48,9 @@ jobs:
 
       - name: List everything (post toolchain)
         run: |
-          tree -alps .
+          #tree -alps .
           tree -alps . | sha256sum
+          find . -type f | sort | xargs sha256sum | tee > post_toolchain
 
       - name: List Haskell binaries (post)
         run: |
@@ -72,21 +73,27 @@ jobs:
 
       - name: List everything (post build)
         run: |
-          tree -alps .
+          #tree -alps .
           tree -alps . | sha256sum
+          find . -type f | sort | xargs sha256sum | tee > post_build
+          diff -u post_toolchain post_build
 
       - name: Test code
         run: cabal test
 
       - name: List everything (post test)
         run: |
-          tree -alps .
+          #tree -alps .
           tree -alps . | sha256sum
+          find . -type f | sort | xargs sha256sum | tee > post_test
+          diff -u post_build post_test
 
       - name: Benchmark code
         run: cabal bench || true
 
       - name: List everything (post bench)
         run: |
-          tree -alps .
+          #tree -alps .
           tree -alps . | sha256sum
+          find . -type f | sort | xargs sha256sum | tee > post_bench
+          diff -u post_test post_bench
