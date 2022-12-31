@@ -10,21 +10,10 @@ on:
 permissions: {}
 
 jobs:
-  test:
-    name: Test job
+  install-toolchain:
+    name: Install Haskell toolchain
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout code"
-        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
-        with:
-          persist-credentials: false
-
-      - name: Remove .git
-        run: rm -rf .git
-
-      - name: List everything (pre)
-        run: tree -alps .
-
       - name: List Haskell binaries (pre)
         run: |
           echo 'Cabal: '
@@ -44,9 +33,6 @@ jobs:
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
 
-      - name: List everything (post)
-        run: tree -alps .
-
       - name: List Haskell binaries (post)
         run: |
           echo 'Cabal: '
@@ -62,3 +48,38 @@ jobs:
           echo 'Stack: '
           which stack || true
           stack --version || true
+
+  test:
+    name: Test job
+    runs-on: ubuntu-latest
+    needs: [install-toolchain]
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+        with:
+          persist-credentials: false
+
+      - name: Remove .git
+        run: rm -rf .git
+
+      - name: List everything (pre)
+        run: tree -alps .
+
+      - name: List Haskell binaries (post?)
+        run: |
+          echo 'Cabal: '
+          which cabal || true
+          cabal --version || true
+          echo 'GHC{,i}: '
+          which ghc ghci || true
+          ghc --version || true
+          ghci --version || true
+          echo 'GHCup: '
+          which ghcup || true
+          ghcup --version || true
+          echo 'Stack: '
+          which stack || true
+          stack --version || true
+
+      - name: List everything (post)
+        run: tree -alps .
