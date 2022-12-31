@@ -70,4 +70,4 @@ jobs:
         run: cabal test
 
       - name: Benchmark code
-        run: cabal bench
+        run: cabal bench || true
