@@ -62,3 +62,7 @@ jobs:
           echo 'Stack: '
           which stack || true
           stack --version || true
+
+      - name: Help cabal
+        run: |
+          cabal --help || true
