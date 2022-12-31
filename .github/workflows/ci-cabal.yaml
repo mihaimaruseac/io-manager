@@ -25,6 +25,9 @@ jobs:
       - name: List everything (pre)
         run: tree -alps .
 
+      - name: List everything in toolchain (pre)
+        run: tree -alps /usr/local/.ghcup
+
       - name: List Haskell binaries (pre)
         run: |
           echo 'Cabal: '
@@ -69,3 +72,6 @@ jobs:
           echo 'Stack: '
           which stack || true
           stack --version || true
+
+      - name: List everything in toolchain (post)
+        run: tree -alps /usr/local/.ghcup
