@@ -27,3 +27,6 @@ jobs:
 
       - name: List everything (post)
         run: tree -alps .
+
+      - name: Setup Haskell Compiler (cabal)
+        uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
