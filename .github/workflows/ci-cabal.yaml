@@ -66,6 +66,8 @@ jobs:
       - name: Help cabal
         run: |
           diff -u <(cabal update    --help) <(cabal v2-update --help) || true
+          echo "===="
+          cabal test --help
 
       - name: Build code
         run: cabal build
