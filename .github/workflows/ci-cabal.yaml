@@ -14,9 +14,6 @@ jobs:
     name: Test job
     runs-on: ubuntu-latest
     steps:
-      - name: List everything (pre)
-        run: tree -alps .
-
       - name: "Checkout code"
         uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
@@ -25,8 +22,11 @@ jobs:
       - name: Remove .git
         run: rm -rf .git
 
-      - name: List everything (post)
+      - name: List everything (pre)
         run: tree -alps .
 
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
+
+      - name: List everything (post)
+        run: tree -alps .
