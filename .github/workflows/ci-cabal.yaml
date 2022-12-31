@@ -74,3 +74,6 @@ jobs:
 
       - name: Test code
         run: cabal test
+
+      - name: Benchmark code
+        run: cabal bench
