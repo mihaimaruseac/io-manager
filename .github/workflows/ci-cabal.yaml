@@ -69,3 +69,6 @@ jobs:
 
       - name: Build code
         run: cabal build
+
+      - name: Test code
+        run: cabal test
