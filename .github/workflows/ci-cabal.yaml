@@ -41,6 +41,13 @@ jobs:
           which stack || true
           stack --version || true
 
+      # Change this whenever the toolchain step below changes
+      - name: Cache
+        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
+        with:
+          path: /usr/local.ghcup
+          key: toolchain-v0
+
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
 
