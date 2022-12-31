@@ -46,9 +46,32 @@ jobs:
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
 
-      - name: List everything (post toolchain)
+      - name: Cache dist-newstyle
+        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
+        with:
+          path: dist-newstyle
+          key: dist-newstyle
+
+      - name: Cache ~/.cabal/logs
+        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
+        with:
+          path: ~/.cabal/logs
+          key: logs
+
+      - name: Cache ~/.cabal/packages
+        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
+        with:
+          path: ~/.cabal/packages
+          key: packages
+
+      - name: Cache ~/.cabal/store
+        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
+        with:
+          path: ~/.cabal/store
+          key: store
+
+      - name: List everything (post toolchain and cache)
         run: |
-          #tree -alps .
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_toolchain
           find ~/.cabal -type f | sort | xargs sha256sum | tee > post_toolchain_cabal
@@ -69,12 +92,17 @@ jobs:
           which stack || true
           stack --version || true
 
+      - name: Configure
+        run: |
+          cat cabal.project.local || true
+          cabal help configure || true
+          cabal help build || true
+
       - name: Build code
         run: cabal build
 
       - name: List everything (post build)
         run: |
-          #tree -alps .
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_build
           diff -u post_toolchain post_build || true
@@ -86,7 +114,6 @@ jobs:
 
       - name: List everything (post test)
         run: |
-          #tree -alps .
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_test
           diff -u post_build post_test || true
@@ -98,7 +125,6 @@ jobs:
 
       - name: List everything (post bench)
         run: |
-          #tree -alps .
           tree -alps . | sha256sum
           find . -type f | sort | xargs sha256sum | tee > post_bench
           diff -u post_test post_bench || true
