@@ -92,9 +92,12 @@ jobs:
           which stack || true
           stack --version || true
 
-      - name: Configure
+      - name: Configuration (pre)
         run: |
           cat cabal.project.local || true
+
+      - name: Configure
+        run: |
           cabal help configure || true
           cabal help build || true
 
@@ -130,3 +133,7 @@ jobs:
           diff -u post_test post_bench || true
           find ~/.cabal -type f | sort | xargs sha256sum | tee > post_bench_cabal
           diff -u post_test_cabal post_bench_cabal || true
+
+      - name: Configuration (end)
+        run: |
+          cat cabal.project.local || true
