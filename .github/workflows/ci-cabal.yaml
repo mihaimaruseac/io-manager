@@ -66,3 +66,6 @@ jobs:
       - name: Help cabal
         run: |
           cabal --help || true
+          cabal --help update || true
+          cabal --help v1-update || true
+          cabal --help v2-update || true
