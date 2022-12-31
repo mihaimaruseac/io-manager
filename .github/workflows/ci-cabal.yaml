@@ -63,14 +63,6 @@ jobs:
           which stack || true
           stack --version || true
 
-      - name: Help cabal
-        run: |
-          diff -u <(cabal update    --help) <(cabal v2-update --help) || true
-          echo "===="
-          cabal test --help
-          echo "===="
-          cabal bench --help
-
       - name: Build code
         run: cabal build
 
