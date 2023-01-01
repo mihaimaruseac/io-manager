@@ -15,7 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: tree -alps .
-      - run: cabal init -n # --non-interactive
+      - run: cabal init --help
+      # -n = --non-interactive
+      # -m = --minimal
+      - run: cabal init -n -m
       - run: tree -alps .
       - run: cat CHANGELOG.md
       - run: cat app/Main.hs
