@@ -19,6 +19,7 @@ jobs:
       # -m = --minimal
       # -n = --non-interactive
       - run: cabal init -n -m --no-comments
+      - run: cabal configure --enable-tests --enable-benchmarks
       - run: tree -alps .
       - run: cat CHANGELOG.md
       - run: cat app/Main.hs
