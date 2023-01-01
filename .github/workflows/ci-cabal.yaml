@@ -31,11 +31,6 @@ jobs:
       - name: Remove .git
         run: rm -rf .git
 
-      - name: List everything (pre)
-        run: |
-          tree -alps .
-          tree -alps . | sha256sum
-
       - name: List Haskell binaries (pre)
         run: |
           echo 'Cabal: '
