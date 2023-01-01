@@ -25,3 +25,4 @@ jobs:
       - run: cat app/Main.hs
       - run: cat io-manager.cabal
       - run: cat ~/.cabal/config
+      - run: cat cabal.project.local
