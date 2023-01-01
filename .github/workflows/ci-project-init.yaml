@@ -16,9 +16,10 @@ jobs:
     steps:
       - run: tree -alps .
       - run: cabal init --help
-      # -n = --non-interactive
+      # -l = --license
       # -m = --minimal
-      - run: cabal init -n -m
+      # -n = --non-interactive
+      - run: cabal init -n -m --no-comments -l BSD3
       - run: tree -alps .
       - run: cat CHANGELOG.md
       - run: cat app/Main.hs
