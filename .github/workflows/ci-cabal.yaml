@@ -90,5 +90,5 @@ jobs:
       - name: Benchmark code
         run: cabal bench || true  # TODO(mihaimaruseac): Fix this
 
-      - name: Test haddock
-        run: cabal haddock --help
+      - name: Test generating documentation
+        run: cabal haddock --all
