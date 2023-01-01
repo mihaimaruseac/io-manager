@@ -46,36 +46,6 @@ jobs:
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
 
-      - name: Cache dist-newstyle
-        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
-        with:
-          path: dist-newstyle
-          key: dist-newstyle
-
-      - name: Cache ~/.cabal/logs
-        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
-        with:
-          path: ~/.cabal/logs
-          key: logs
-
-      - name: Cache ~/.cabal/packages
-        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
-        with:
-          path: ~/.cabal/packages
-          key: packages
-
-      - name: Cache ~/.cabal/store
-        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
-        with:
-          path: ~/.cabal/store
-          key: store
-
-      - name: List everything (post toolchain and cache)
-        run: |
-          tree -alps . | sha256sum
-          find . -type f | sort | xargs sha256sum | tee > post_toolchain
-          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_toolchain_cabal
-
       - name: List Haskell binaries (post)
         run: |
           echo 'Cabal: '
@@ -92,48 +62,30 @@ jobs:
           which stack || true
           stack --version || true
 
-      - name: Configuration (pre)
-        run: |
-          cat cabal.project.local || true
+      - name: Cache dist-newstyle
+        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
+        with:
+          path: dist-newstyle
+          key: dist-newstyle-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('src*') }}
+          restore-keys: |
+            dist-newstyle-${{ hashFiles('**/*.cabal') }}
+            dist-newstyle-
 
-      - name: Configure
-        run: |
-          cabal help configure || true
-          cabal help build || true
+      - name: Cache ~/.cabal/store
+        uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
+        with:
+          path: ~/.cabal/store
+          key: cabal-store-${{ hashFiles('**/*.cabal') }}
+          restore-keys: cabal-store-
+
+      - name: Configure to run tests and benchmarks
+        run: cabal configure --enable-tests --enable-benchmarks
 
       - name: Build code
         run: cabal build
 
-      - name: List everything (post build)
-        run: |
-          tree -alps . | sha256sum
-          find . -type f | sort | xargs sha256sum | tee > post_build
-          diff -u post_toolchain post_build || true
-          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_build_cabal
-          diff -u post_toolchain_cabal post_build_cabal || true
-
       - name: Test code
-        run: cabal test || true
-
-      - name: List everything (post test)
-        run: |
-          tree -alps . | sha256sum
-          find . -type f | sort | xargs sha256sum | tee > post_test
-          diff -u post_build post_test || true
-          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_test_cabal
-          diff -u post_build_cabal post_test_cabal || true
+        run: cabal test || true  # TODO(mihaimaruseac): Fix this
 
       - name: Benchmark code
-        run: cabal bench || true
-
-      - name: List everything (post bench)
-        run: |
-          tree -alps . | sha256sum
-          find . -type f | sort | xargs sha256sum | tee > post_bench
-          diff -u post_test post_bench || true
-          find ~/.cabal -type f | sort | xargs sha256sum | tee > post_bench_cabal
-          diff -u post_test_cabal post_bench_cabal || true
-
-      - name: Configuration (end)
-        run: |
-          cat cabal.project.local || true
+        run: cabal bench || true  # TODO(mihaimaruseac): Fix this
