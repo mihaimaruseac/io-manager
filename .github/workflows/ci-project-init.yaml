@@ -17,6 +17,6 @@ jobs:
       - run: tree -alps .
       - run: cabal init -n # --non-interactive
       - run: tree -alps .
-      - run: cat CHANGELOG
+      - run: cat CHANGELOG.md
       - run: cat app/Main.hs
       - run: cat io-manager.cabal
