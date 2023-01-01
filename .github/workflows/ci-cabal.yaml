@@ -28,9 +28,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Remove .git
-        run: rm -rf .git
-
       - name: List Haskell binaries (pre)
         run: |
           echo 'Cabal: '
