@@ -12,10 +12,11 @@ permissions: {}
 jobs:
   test:
     name: Test job
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false # don't cancel other jobs if one fails
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         ghc: ["8.10.7", "9.2.5", "9.4.4"]
     steps:
       - name: "Checkout code"
@@ -72,19 +73,21 @@ jobs:
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
           path: dist-newstyle
-          key: dist-newstyle-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('src*') }}
+          key: dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('src*') }}
           restore-keys: |
-            dist-newstyle-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
-            dist-newstyle-${{ matrix.ghc }}-
+            dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
+            dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-
+            dist-newstyle-${{ matrix.os }}-
             dist-newstyle-
 
       - name: Cache ~/.cabal/store
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
           path: ~/.cabal/store
-          key: cabal-store-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
+          key: cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
           restore-keys: |
-            cabal-store-${{ matrix.ghc }}
+            cabal-store-${{ matrix.os }}-${{ matrix.ghc }}
+            cabal-store-${{ matrix.os }}-
             cabal-store-
 
       - name: Configure to run tests and benchmarks
