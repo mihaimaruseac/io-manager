@@ -23,3 +23,4 @@ jobs:
       - run: cat CHANGELOG.md
       - run: cat app/Main.hs
       - run: cat io-manager.cabal
+      - run: cat ~/.cabal/config
