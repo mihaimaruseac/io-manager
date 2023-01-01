@@ -1,0 +1,19 @@
+name: Cabal new project
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+permissions: {}
+
+jobs:
+  test:
+    name: Test job
+    runs-on: ubuntu-latest
+    steps:
+      - name: List everything (pre)
+        run: |
+          tree -alps .
