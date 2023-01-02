@@ -29,6 +29,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Haskell Compiler (cabal)
+        id: setup-haskell
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
         with:
           ghc-version: ${{ matrix.ghc }}
@@ -47,10 +48,10 @@ jobs:
       - name: Cache ~/.cabal/store
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
-          path: ~/.cabal/store
+          path: ${{ steps.setup-haskell.outputs.cabal-store }}
           key: cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
           restore-keys: |
-            cabal-store-${{ matrix.os }}-${{ matrix.ghc }}
+            cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-
             cabal-store-${{ matrix.os }}-
             cabal-store-
 
