@@ -49,7 +49,6 @@ jobs:
 
       - name: Debug
         run: |
-          ls $(cabal list-bin .) || echo 'binary not yet built'
           rm -rf .git dist-newstyle
           tree -alps
-          cabal list-bin .
+          cabal list-bin all:exes
