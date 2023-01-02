@@ -28,42 +28,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: List Haskell binaries (pre)
-        run: |
-          echo 'Cabal: '
-          which cabal || true
-          cabal --version || true
-          echo 'GHC{,i}: '
-          which ghc ghci || true
-          ghc --version || true
-          ghci --version || true
-          echo 'GHCup: '
-          which ghcup || true
-          ghcup --version || true
-          echo 'Stack: '
-          which stack || true
-          stack --version || true
-
       - name: Setup Haskell Compiler (cabal)
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
         with:
           ghc-version: ${{ matrix.ghc }}
-
-      - name: List Haskell binaries (post)
-        run: |
-          echo 'Cabal: '
-          which cabal || true
-          cabal --version || true
-          echo 'GHC{,i}: '
-          which ghc ghci || true
-          ghc --version || true
-          ghci --version || true
-          echo 'GHCup: '
-          which ghcup || true
-          ghcup --version || true
-          echo 'Stack: '
-          which stack || true
-          stack --version || true
 
       - name: Cache dist-newstyle
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
