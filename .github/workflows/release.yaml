@@ -13,6 +13,8 @@ jobs:
     env:
       os: "ubuntu-latest"
       ghc: "9.4.4"
+    outputs:
+      hash_sdist: ${{ steps.hash_sdist.outputs.hash_sdist }}
     steps:
       - name: Checkout code
         uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
@@ -47,8 +49,35 @@ jobs:
       - name: Generate source distribution
         run: cabal sdist --output .
 
+      - name: Generate subject for provenance of source distribution
+        id: hash_sdist
+        run: |
+          set -euo pipefail
+          echo "hash_sdist=$(sha256sum io-manager-*.tar.gz | base64 -w0)" >> "${GITHUB_OUTPUT}"
+
+      - name: Upload sdist as an artifact for later jobs in workflow
+        uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+        with:
+          name: io-manager-*.tar.gz
+          path: sdist
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Debug
         run: |
           rm -rf .git dist-newstyle
           tree -alps
           cabal list-bin all:exes
+
+  provenance-sdist:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.4.0
+    with:
+      base64-subjects: "${{ steps.hash_sdist.outputs.hash_sdist }}"
+      upload-assets: true
+      provenance-name: sdist.intoto.jsonl
+
