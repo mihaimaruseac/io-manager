@@ -48,5 +48,5 @@ jobs:
 
       - name: Debug
         run: |
-          rm -rf .git
+          rm -rf .git dist-newstyle
           tree -alps
