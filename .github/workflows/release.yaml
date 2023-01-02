@@ -72,18 +72,18 @@ jobs:
           set -euo pipefail
           echo "hash_exes=$(sha256sum .execs/* | base64 -w0)" >> "${GITHUB_OUTPUT}"
 
+      - name: Debug
+        run: |
+          rm -rf .git dist-newstyle
+          tree -alps
+          cabal list-bin all:exes
+
       - name: Upload sdist as an artifact for later jobs in workflow
         uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
         with:
           path: execs/
           if-no-files-found: error
           retention-days: 1
-
-      - name: Debug
-        run: |
-          rm -rf .git dist-newstyle
-          tree -alps
-          cabal list-bin all:exes
 
   provenance-sdist:
     needs: [build]
