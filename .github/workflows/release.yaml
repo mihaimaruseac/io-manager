@@ -70,7 +70,7 @@ jobs:
         id: hash_execs
         run: |
           set -euo pipefail
-          echo "hash_exes=$(sha256sum .execs/* | base64 -w0)" >> "${GITHUB_OUTPUT}"
+          echo "hash_execs=$(sha256sum .execs/* | base64 -w0)" >> "${GITHUB_OUTPUT}"
 
       - name: Debug
         run: |
