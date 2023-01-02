@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
           path: .stack-work
-          key: stack-work-${{ matrix.os }}-${{ matrix.resolver }}-${{ hashFiles('stack.yaml', '**/*.cabal') }}-${{ hashFiles('src*') }}
+          key: stack-work-${{ matrix.os }}-${{ matrix.resolver }}-${{ hashFiles('stack.yaml', '**/*.cabal') }}-${{ hashFiles('simple-echo-example/*') }}
           restore-keys: |
             stack-work-${{ matrix.os }}-${{ matrix.resolver }}-${{ hashFiles('stack.yaml', '**/*.cabal') }}-
             stack-work-${{ matrix.os }}-${{ matrix.resolver }}-
