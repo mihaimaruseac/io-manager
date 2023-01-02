@@ -41,6 +41,9 @@ jobs:
           key: cabal-store-${{ env.os }}-${{ env.ghc }}-${{ hashFiles('**/*.cabal') }}
           restore-keys: cabal-store-${{ env.os }}-${{ env.ghc }}-
 
+      - name: Build executables
+        run: cabal build all:exes
+
       - name: Generate source distribution
         run: cabal sdist --output .
 
