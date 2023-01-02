@@ -40,20 +40,15 @@ jobs:
           path: dist-newstyle
           key: dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('src*') }}
           restore-keys: |
-            dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
+            dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-
             dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-
-            dist-newstyle-${{ matrix.os }}-
-            dist-newstyle-
 
       - name: Cache ~/.cabal/store
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
           path: ${{ steps.setup-haskell.outputs.cabal-store }}
           key: cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
-          restore-keys: |
-            cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-
-            cabal-store-${{ matrix.os }}-
-            cabal-store-
+          restore-keys: cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-
 
       - name: Configure to run tests and benchmarks
         run: cabal configure --enable-tests --enable-benchmarks
