@@ -1,0 +1,5 @@
+# Use nightly resolver to run with the newest GHC compilers and obtain error
+# reports as soon as possible, tracking the reports from Stackage.
+resolver: nightly
+packages:
+- '.'
