@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
           path: dist-newstyle
-          key: dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('src*') }}
+          key: dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('simple-echo-example/*') }}
           restore-keys: |
             dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-
             dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-
