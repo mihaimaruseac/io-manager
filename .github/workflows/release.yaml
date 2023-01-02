@@ -59,13 +59,12 @@ jobs:
       - name: Upload sdist as an artifact for later jobs in workflow
         uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
         with:
-          name: sdist
           path: io-manager-*.tar.gz
           if-no-files-found: error
           retention-days: 1
 
       - name: Copy all executables to root directory for ease of release
-        run: mkdir .execs && cp (cabal list-bin all:exes) .execs
+        run: mkdir .execs && cp $(cabal list-bin all:exes) .execs
 
       - name: Generate subject for provenance of executables
         id: hash_execs
