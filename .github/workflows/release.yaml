@@ -56,6 +56,10 @@ jobs:
           set -euo pipefail
           echo "hash_sdist=$(sha256sum io-manager-*.tar.gz | base64 -w0)" >> "${GITHUB_OUTPUT}"
 
+      # Wehn uploading we pick a fixed name since we don't yet have access to
+      # the version string in the tarball. This can be fixed with some
+      # scripting if needed, but it works for our use cases as it is.
+      # TODO(mihaimaruseac): Maybe fix to upload the path as needed
       - name: Upload sdist as an artifact for later jobs in workflow
         uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
         with:
@@ -67,13 +71,25 @@ jobs:
       - name: Copy all executables to root directory for ease of release
         run: mkdir .execs && cp $(cabal list-bin all:exes) .execs
 
+      # TODO(mihaimaruseac): Strip executables
+
       - name: Generate subject for provenance of executables
         id: hash_execs
         run: |
           set -euo pipefail
           echo "hash_execs=$(sha256sum .execs/* | base64 -w0)" >> "${GITHUB_OUTPUT}"
 
-      - name: Upload sdist as an artifact for later jobs in workflow
+      # When uploading executables we push them all to the same archive and
+      # later the action that downloads it automatically unpacks it. So, in
+      # effect this allows us to be transparent on what the executables we
+      # generate.
+      # However, on the CI run this will result in an artifact (short lived!)
+      # that has all of the executables in it. If we want to upload each
+      # executable by itself, maybe we can use automatic matrix generation[1]
+      # for this.
+      # [1]: https://frontside.com/blog/2022-12-12-dynamic-github-action-jobs/
+      # TODO(mihaimaruseac): Maybe use automatic matrix generation here
+      - name: Upload executables as an artifact for later jobs in workflow
         uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
         with:
           path: .execs/
@@ -112,14 +128,18 @@ jobs:
     steps:
       - name: Download artifact
         uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+        with:
+          name: executables.zip
 
-      - name: Debug
-        run: |
-          rm -rf .git dist-newstyle || true
-          tree -alps || true
+      - name: Download artifact
+        uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+        with:
+          name: sdist.zip
 
-#      - name: Upload assets
-#        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
-#        with:
-#          files: |
-#            built-with-cabal
+      - name: Upload assets
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
+        with:
+          files: *
+
+      # TODO(mihaimaruseac): Upload sdist to Hackage
+      # TODO(mihaimaruseac): Upload haddock and build report to Hackage (maybe)
