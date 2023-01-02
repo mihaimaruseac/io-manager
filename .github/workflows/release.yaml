@@ -50,3 +50,4 @@ jobs:
         run: |
           rm -rf .git dist-newstyle
           tree -alps
+          cabal list-bin .
