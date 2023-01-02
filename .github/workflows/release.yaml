@@ -139,7 +139,7 @@ jobs:
       - name: Upload assets
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
         with:
-          files: *
+          files: ./*
 
       # TODO(mihaimaruseac): Upload sdist to Hackage
       # TODO(mihaimaruseac): Upload haddock and build report to Hackage (maybe)
