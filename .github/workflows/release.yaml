@@ -7,14 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    # The strategy here is a misnomer, we are using exactly one version
-    # everywhere. But this would make it easy to ensure that we use the same
-    # caching as in Cabal-based CI.
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        ghc: ["9.4.4"]
+    runs-on: ubuntu-latest
+    # Keep these in sync with a subset of Cabal-based CI matrix. This way, we
+    # are not building a new cache here, just reusing an existing one.
+    env:
+      os: "ubuntu-latest"
+      ghc: "9.4.4"
     steps:
       - name: Checkout code
         uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
@@ -25,23 +23,23 @@ jobs:
         id: setup-haskell
         uses: haskell/actions/setup@93635e8c4ac823f55cf3444537a63d3f2fd589de # v2.1.0
         with:
-          ghc-version: ${{ matrix.ghc }}
+          ghc-version: ${{ env.ghc }}
 
       - name: Cache dist-newstyle
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
           path: dist-newstyle
-          key: dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('simple-echo-example/*') }}
+          key: dist-newstyle-${{ env.os }}-${{ env.ghc }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('simple-echo-example/*') }}
           restore-keys: |
-            dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}-
-            dist-newstyle-${{ matrix.os }}-${{ matrix.ghc }}-
+            dist-newstyle-${{ env.os }}-${{ env.ghc }}-${{ hashFiles('**/*.cabal') }}-
+            dist-newstyle-${{ env.os }}-${{ env.ghc }}-
 
       - name: Cache ~/.cabal/store
         uses: actions/cache@4723a57e26efda3a62cbde1812113b730952852d # v3.2.2
         with:
           path: ${{ steps.setup-haskell.outputs.cabal-store }}
-          key: cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal') }}
-          restore-keys: cabal-store-${{ matrix.os }}-${{ matrix.ghc }}-
+          key: cabal-store-${{ env.os }}-${{ env.ghc }}-${{ hashFiles('**/*.cabal') }}
+          restore-keys: cabal-store-${{ env.os }}-${{ env.ghc }}-
 
       - name: Generate source distribution
         run: cabal sdist --output .
