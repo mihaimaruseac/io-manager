@@ -5,8 +5,11 @@ on:
   release:
     types: [created]
 
+permissions: {}
+
 jobs:
   build:
+    if: github.repository == 'mihaimaruseac/io-manager' # Don't do this in forks
     runs-on: ubuntu-latest
     # Keep these in sync with a subset of Cabal-based CI matrix. This way, we
     # are not building a new cache here, just reusing an existing one.
