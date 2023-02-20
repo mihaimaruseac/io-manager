@@ -1,2 +1,4 @@
-cabal.project.local
+.*
+!.github/
+!.gitignore
 dist-newstyle/
