@@ -1,4 +1,4 @@
-name: Haskell CI with Stack
+name: Haskell Stack
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions: {}
 
 jobs:
   test:
-    name: Test job
+    name: CI
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false # don't cancel other jobs if one fails
