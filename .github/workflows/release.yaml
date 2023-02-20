@@ -5,8 +5,6 @@ on:
   release:
     types: [created]
 
-permissions: {}
-
 jobs:
   build:
     if: github.repository == 'mihaimaruseac/io-manager' # Don't do this in forks
