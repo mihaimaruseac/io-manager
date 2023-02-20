@@ -51,6 +51,9 @@ jobs:
       - name: Generate source distribution
         run: cabal sdist --output .
 
+      - name: Generate documentation
+        run: cabal haddock --haddock-for-hackage --enable-doc --builddir=.
+
       - name: Generate subject for provenance of source distribution
         id: hash_sdist
         run: |
@@ -142,5 +145,6 @@ jobs:
         with:
           files: ./*
 
-      # TODO(mihaimaruseac): Upload sdist to Hackage
-      # TODO(mihaimaruseac): Upload haddock and build report to Hackage (maybe)
+      # TODO(mihaimaruseac): Upload haddock and build report to Hackage
+      # Not doing this now because we don't want to store user/pass in GitHub
+      # secrets and there is no OIDC way to upload.
