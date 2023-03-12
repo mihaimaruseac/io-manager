@@ -1,5 +1,4 @@
-io-manager
-==========
+# io-manager [![Hackage](https://img.shields.io/hackage/v/io-manager.svg?style=flat)](https://hackage.haskell.org/package/io-manager) [![Haskell Cabal](https://github.com/mihaimaruseac/io-manager/actions/workflows/presubmit-cabal.yaml/badge.svg)](https://github.com/mihaimaruseac/io-manager/actions/workflows/presubmit-cabal.yaml) [![Haskell Stack](https://github.com/mihaimaruseac/io-manager/actions/workflows/presubmit-stack.yaml/badge.svg)](https://github.com/mihaimaruseac/io-manager/actions/workflows/presubmit-stack.yaml) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/mihaimaruseac/io-manager/badge)](https://api.securityscorecards.dev/projects/github.com/mihaimaruseac/io-manager)
 
 This is a simple framework which hides away the IO monad and allows beginner
 students to write simple applications in Haskell without having to touch the
