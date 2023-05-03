@@ -107,7 +107,7 @@ writeOutput o = do
 -- | Wraps a simple function @Input@ -> @Output@ -> @Output@ in
 -- order to simplify student's usage.
 wrapIO :: (Input -> Output -> Output) -> IO ()
-wrapIO f = liftM (uncurry f) readInput >>= writeOutput
+wrapIO f = uncurry f <$> readInput >>= writeOutput
 
 -- | Reads all of the input files into the map of the Input value.
 readInputFiles :: [Filename]
