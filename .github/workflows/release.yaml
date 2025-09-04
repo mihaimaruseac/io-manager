@@ -101,6 +101,7 @@ jobs:
           path: .execs/
           name: executables.zip # When downloading it is a zip with all executables
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 1
 
   provenance-sdist:
